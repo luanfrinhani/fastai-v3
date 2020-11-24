@@ -18,7 +18,7 @@ function analyze() {
   var uploadFiles = el("file-input").files;
   if (uploadFiles.length !== 1) alert("Por favor selecione um arquivo");
 
-  el("analyze-button").innerHTML = "Analyzing...";
+  el("analyze-button").innerHTML = "Classificando...";
   var xhr = new XMLHttpRequest();
   var loc = window.location;
   xhr.open("POST", `${loc.protocol}//${loc.hostname}:${loc.port}/analyze`,
