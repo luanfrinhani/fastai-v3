@@ -1,5 +1,5 @@
 
-import Flask, render_template, request, url_for, jsonify
+import flask, render_template, request, url_for, jsonify
 from fastai.basic_train import load_learner
 from fastai.vision import open_image
 from flask_cors import CORS, cross_origin
