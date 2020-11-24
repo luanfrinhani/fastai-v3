@@ -6,14 +6,16 @@ from flask_cors import CORS, cross_origin
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-
+export_file_url = 'https://drive.google.com/uc?export=download&id=1O19qAjzBJi4EnIFslRJxm1ttKy3CpbcC'
+export_file_name = 'Segmantation-1.pkl'
+path = Path(__file__).parent
 app = Flask(__name__)
 
  
 
 @app.route('/')
  
-learn = load_learner('https://drive.google.com/uc?export=download&id=1O19qAjzBJi4EnIFslRJxm1ttKy3CpbcC', 'Segmantation-1.pkl')
+learn = load_learner(path, export_file_name)
 classes = learn.data.classes
 logging.debug('Learnt classes')
 
