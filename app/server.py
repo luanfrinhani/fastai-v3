@@ -1,5 +1,5 @@
 
-import flask, render_template, request, url_for, jsonify
+import flask, request, url_for, jsonify
 from fastai.basic_train import load_learner
 from fastai.vision import open_image
 from flask_cors import CORS, cross_origin
@@ -12,8 +12,6 @@ app = Flask(__name__)
  
 
 @app.route('/')
-def homepage():
-    return render_template('index.html')
  
 learn = load_learner('https://drive.google.com/uc?export=download&id=1O19qAjzBJi4EnIFslRJxm1ttKy3CpbcC', 'Segmantation-1.pkl')
 classes = learn.data.classes
