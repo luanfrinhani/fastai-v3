@@ -1,46 +1,69 @@
-from flask import Flask, render_template, request, url_for, jsonify
-from fastai.basic_train import load_learner
-from fastai.vision import open_image
-from flask_cors import CORS, cross_origin
-import logging
+import aiohttp
+import asyncio
+import uvicorn
+from fastai import *
+from fastai.vision import *
+from io import BytesIO
+from starlette.applications import Starlette
+from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import HTMLResponse, JSONResponse
+from starlette.staticfiles import StaticFiles
 
-logging.basicConfig(level=logging.DEBUG)
+export_file_url = 'https://drive.google.com/uc?export=download&id=1-8ohoIE3k8iSbEBdJjbmyj_2xfM6P48G'
+export_file_name = 'classification-teste.pkl'
 
-app = Flask(__name__)
+classes = ['dengue','nao-dengue']
+path = Path(__file__).parent
 
- 
+app = Starlette()
+app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
+app.mount('/static', StaticFiles(directory='app/static'))
+
+
+async def download_file(url, dest):
+    if dest.exists(): return
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            data = await response.read()
+            with open(dest, 'wb') as f:
+                f.write(data)
+
+
+async def setup_learner():
+    await download_file(export_file_url, path / export_file_name)
+    try:
+        learn = load_learner(path, export_file_name)
+        return learn
+    except RuntimeError as e:
+        if len(e.args) > 0 and 'CPU-only machine' in e.args[0]:
+            print(e)
+            message = "\n\nThis model was trained with an old version of fastai and will not work in a CPU environment.\n\nPlease update the fastai library in your training environment and export your model again.\n\nSee instructions for 'Returning to work' at https://course.fast.ai."
+            raise RuntimeError(message)
+        else:
+            raise
+
+
+loop = asyncio.get_event_loop()
+tasks = [asyncio.ensure_future(setup_learner())]
+learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
+loop.close()
+
 
 @app.route('/')
-def homepage():
-    return render_template('index.html')
- 
-learn = load_learner('https://drive.google.com/uc?export=download&id=1-8ohoIE3k8iSbEBdJjbmyj_2xfM6P48G', file = 'classification-teste.pkl')
-classes = learn.data.classes
-logging.debug('Learnt classes')
+async def homepage(request):
+    html_file = path / 'view' / 'index.html'
+    return HTMLResponse(html_file.open().read())
 
 
-def predict_single(img_file):
-    '''function to take image and return prediction'''
-    logging.debug('This function to take image and return prediction')
+@app.route('/analyze', methods=['POST'])
+async def analyze(request):
+    img_data = await request.form()
+    img_bytes = await (img_data['file'].read())
+    img = open_image(BytesIO(img_bytes))
+    prediction = learn.predict(img)[0]
+    return JSONResponse({'result': str(prediction)})
 
-    prediction = learn.predict(open_image(img_file))
-    probs_list = prediction  # [2].numpy()
-    print("Inside predict_single")
-    logging.debug('Before probs_list')
-    return probs_list
 
- 
-
-@app.route('/', methods=['POST'])
-def predict():
-    if request.method == 'POST':  
-        logging.debug('Before my_prediction')
-        my_prediction = predict_single(request.files['image'])        
-        logging.debug('Before final_pred')
-        final_pred = str(my_prediction[0])
-        logging.debug('After final_pred')
-    return render_template('results.html', prediction=final_pred,
-                           comment='asd')
- 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if 'serve' in sys.argv:
+        uvicorn.run(app=app, host='0.0.0.0', port=5000, log_level="info")
