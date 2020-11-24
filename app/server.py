@@ -10,7 +10,7 @@ from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 from fastai.callbacks.hooks import *
 from fastai.utils.mem import *
-import cv2
+
 
 export_file_url = 'https://drive.google.com/uc?export=download&id=1O19qAjzBJi4EnIFslRJxm1ttKy3CpbcC'
 export_file_name = 'Segmantation-1.pkl'
