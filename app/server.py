@@ -9,10 +9,10 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url = 'https://drive.google.com/uc?export=download&id=1-8ohoIE3k8iSbEBdJjbmyj_2xfM6P48G'
-export_file_name = 'classification-teste.pkl'
+export_file_url = 'https://drive.google.com/uc?export=download&id=1O19qAjzBJi4EnIFslRJxm1ttKy3CpbcC'
+export_file_name = 'Segmantation-1.pkl'
 
-classes = ['dengue','nao-dengue']
+classes = ['background','caixa_dagua_aberta', 'caixa_dagua_fechada', 'piscina_suja', 'piscina_limpa', 'agua_parada', 'padder1', 'pneu']
 path = Path(__file__).parent
 
 app = Starlette()
@@ -61,7 +61,7 @@ async def analyze(request):
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
     prediction = learn.predict(img)[0]
-    return JSONResponse({'result': str(prediction)})
+    return JSONResponse({'result': prediction})
 
 
 if __name__ == '__main__':
