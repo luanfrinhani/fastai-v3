@@ -9,10 +9,10 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url = 'https://drive.google.com/uc?export=download&id=1-8ohoIE3k8iSbEBdJjbmyj_2xfM6P48G'
-export_file_name = 'classification-teste.pkl'
+export_file_url = 'https://drive.google.com/uc?export=download&id=1-75fqNvoKcnF1uM6fjmdGutpxQaBfGDN'
+export_file_name = 'Segmantation-1-30-11.pkl'
 
-classes = ['dengue','nao-dengue']
+classes = ['background','caixa_dagua_aberta', 'caixa_dagua_fechada', 'piscina_suja', 'piscina_limpa', 'agua_parada', 'padder1', 'pneu']
 path = Path(__file__).parent
 
 app = Starlette()
