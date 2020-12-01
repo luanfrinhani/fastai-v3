@@ -9,7 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url = 'https://drive.google.com/uc?export=download&id=1-75fqNvoKcnF1uM6fjmdGutpxQaBfGDN'
+export_file_url = 'https://www.dropbox.com/s/tluwr2ad2x51uj0/Segmantation-1-30-11.pkl?dl=1'
 export_file_name = 'Segmantation-1-30-11.pkl'
 
 classes = ['background','caixa_dagua_aberta', 'caixa_dagua_fechada', 'piscina_suja', 'piscina_limpa', 'agua_parada', 'padder1', 'pneu']
