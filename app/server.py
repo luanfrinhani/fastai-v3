@@ -10,8 +10,8 @@ from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 import numpy as np
 
-export_file_url = 'https://drive.google.com/uc?export=download&id=1-8ohoIE3k8iSbEBdJjbmyj_2xfM6P48G'
-export_file_name = 'classification-teste.pkl'
+#export_file_url = 'https://drive.google.com/uc?export=download&id=1-8ohoIE3k8iSbEBdJjbmyj_2xfM6P48G'
+#export_file_name = 'classification-teste.pkl'
 
 classes = ['dengue','nao-dengue']
 path = Path(__file__).parent
@@ -33,6 +33,7 @@ async def download_file(url, dest):
 async def setup_learner():
     await download_file(export_file_url, path / export_file_name)
     try:
+        learn = cnn_learner(data, models.resnet34, metrics=error_rate)
         learn = load_learner(path, export_file_name)
         return learn
     except RuntimeError as e:
