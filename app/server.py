@@ -10,10 +10,10 @@ from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 import numpy as np
 
-export_file_url = 'https://www.dropbox.com/s/tluwr2ad2x51uj0/Segmantation-1-30-11.pkl?dl=1'
-export_file_name = 'Segmantation-1-30-11.pkl'
+export_file_url = 'https://drive.google.com/uc?export=download&id=1-8ohoIE3k8iSbEBdJjbmyj_2xfM6P48G'
+export_file_name = 'classification-teste.pkl'
 
-classes = np.array(['background','caixa_dagua_aberta', 'caixa_dagua_fechada', 'piscina_suja', 'piscina_limpa', 'agua_parada', 'padder1', 'pneu'])
+classes = ['dengue','nao-dengue']
 path = Path(__file__).parent
 
 app = Starlette()
