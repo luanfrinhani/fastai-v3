@@ -10,7 +10,8 @@ from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 import numpy as np
 
-defaults.device = torch.device('cuda')
+
+
 export_file_url = 'https://www.dropbox.com/s/tluwr2ad2x51uj0/Segmantation-1-30-11.pkl?dl=1'
 export_file_name = 'Segmantation-1-30-11.pkl'
 
