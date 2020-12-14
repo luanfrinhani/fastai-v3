@@ -12,11 +12,10 @@ import numpy as np
 
 
 
-export_file_url = 'https://drive.google.com/uc?export=download&id=1-4yqTZoce96sylXTzYz0w_N32ZqU2fFy'
-export_file_name = 'Tentativa-2-96.pth'
+export_file_url = 'https://drive.google.com/uc?export=download&id=1-8ohoIE3k8iSbEBdJjbmyj_2xfM6P48G'
+export_file_name = 'classification-teste.pkl'
 
-codes = np.array(['background','caixa_dagua_aberta', 'caixa_dagua_fechada', 'piscina_suja', 'piscina_limpa', 'agua_parada', 'padder1', 'pneu'])
-classes = codes
+classes = ['dengue','nao-dengue']
 path = Path(__file__).parent
 
 app = Starlette()
